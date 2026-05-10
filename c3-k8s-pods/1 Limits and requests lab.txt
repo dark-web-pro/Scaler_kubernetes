@@ -1,0 +1,61 @@
+Limits and Requests:
+1) the pod will run with no limit on cpu and memory
+
+2) we can optionally specify how much cpu and memory each container needs
+
+3) Scheduler decides about which node to place the pods only if the 
+node has enough cpu resources available to satisfy the pod cpu request. 
+
+4) CPU is specified in units of cores and memmory specified in unit of bytes.
+
+5) each resource is two resource type:
+   1) request
+   2) limits 
+
+> request: This is the minimum resource a container will require to run and my node will guarantee min of these resources. 
+
+> limits: Max amount of resouce that k8s will allow the pod to use. 
+
+
+
+vi test1.pod
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resources #name of the pod is resources
+spec:
+  containers:
+    - name: testcon   #the container name is testcon
+      image: centos   #image which this container is using is centos 
+      command: ["/bin/bash","-c","while true; do echo akshat; sleep 50; done"]   #echo akshat at interval of 50 sec
+      resources:
+        requests:
+          memory: "64Mi"   #memibyte  #i am requesting the memory of 64 MI
+          cpu: "100m"  #0.1 cpu ..millicore
+        limits:
+          memory: "128Mi"
+          cpu: "200m"
+
+
+
+kubectl apply -f test1.pod
+
+kubectl desribe pod resources
+
+in o/p you should see the limit and request
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
